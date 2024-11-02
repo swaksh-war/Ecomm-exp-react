@@ -60,6 +60,20 @@ router.post('/cart', async (req, res) => {
     }
 });
 
+router.delete('/cart/:productId', async (req, res) => {
+    const { productId } = req.params;
+    try {
+        let cart = await Cart.findOne();
+        if (!cart) return res.status(404).json({ message: 'Cart not found' });
+        cart.items = cart.items.filter(item => item.productId && item.productId._id.toString() !== productId);
+        await cart.save();
+        res.json(cart);
+    } catch(err) {
+        console.error('Error Removing from cart: ', err);
+        res.status(500).json({message: "Error removing from cart", err});
+    }
+});
+
 router.get('/wishlist', async (req, res) => {
     try {
         const wishlist = await Wishlist.findOne().populate('items.productId'); 
