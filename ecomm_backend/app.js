@@ -16,6 +16,7 @@ const PORT = process.env.PORT || 5000;
 
 console.log('MongoDB URI:', process.env.MONGO_URI);
 app.use('/api', productRoutes);
+app.use(express.static(path.join(__dirname, 'public')))
 
 
 mongoose.connect(process.env.MONGO_URI)
@@ -26,10 +27,10 @@ mongoose.connect(process.env.MONGO_URI)
     console.error('MongoDB connection error:', err.message);
 });
 
-app.get('/', (req, res) => {
-    res.send("Hello From Express Server");
-})
 
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'))
+})
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
