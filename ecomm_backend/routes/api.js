@@ -91,7 +91,7 @@ router.post('/wishlist', async (req, res) => {
         let wishlist = await Wishlist.findOne();
         if (!wishlist) wishlist = new Wishlist({ items: [] });
 
-        // Check if product already exists in the wishlist
+        
         const productExists = wishlist.items.some(item => item.productId.toString() === productId);
         if (!productExists) {
             wishlist.items.push({ productId });
